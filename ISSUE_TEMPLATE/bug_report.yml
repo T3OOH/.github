@@ -1,0 +1,44 @@
+name: 🐞 Bug
+description: Algo não está funcionando como deveria
+labels: ["bug"]
+body:
+  - type: dropdown
+    id: area
+    attributes:
+      label: Área
+      options:
+        - Site público
+        - Mapa / Carrinho / Checkout
+        - Área do cliente
+        - Dashboard administrativo
+        - CRM
+        - API / Backend
+    validations:
+      required: true
+  - type: textarea
+    id: descricao
+    attributes:
+      label: O que aconteceu?
+      description: Descreva o problema e o que você esperava que acontecesse.
+    validations:
+      required: true
+  - type: textarea
+    id: passos
+    attributes:
+      label: Passos para reproduzir
+      placeholder: |
+        1. Acesse /mapa
+        2. Adicione um painel ao carrinho
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: ambiente
+    attributes:
+      label: Ambiente
+      placeholder: "Produção / homologação · Chrome 130 · Android"
+  - type: textarea
+    id: evidencias
+    attributes:
+      label: Prints, vídeos ou logs
+      description: Não cole senhas, tokens ou dados pessoais de clientes.

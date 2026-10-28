@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🔒 Reportar vulnerabilidade
+    url: https://github.com/T3OOH/Backend/security/advisories/new
+    about: Problemas de segurança são reportados de forma privada, nunca em issues públicas.
