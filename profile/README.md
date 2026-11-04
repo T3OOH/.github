@@ -22,7 +22,7 @@ Os pedidos das duas linhas caem no mesmo CRM, separados por linha, e a equipe ac
 ### Site público
 
 - Tela de entrada para escolher entre T3 OOH e T3 Solution, cada lado com o próprio vídeo.
-- Mapa de painéis com filtros por estado e cidade, detalhes de cada ponto e carrinho de orçamento.
+- Mapa de painéis com filtros por estado e cidade, detalhes de cada ponto e carrinho de orçamento. No celular, atalhos por cidade, lista completa dos painéis e cartão do telão selecionado.
 - Catálogo com os mesmos painéis em lista, para montar pacotes.
 - Página da T3 Solution com formulário de orçamento que abre um negócio no CRM.
 - Desconto por prazo calculado no servidor: 15% em 3 meses, 20% em 6 e 30% a partir de 12.
@@ -32,13 +32,17 @@ Os pedidos das duas linhas caem no mesmo CRM, separados por linha, e a equipe ac
 
 - Cadastro e login com e-mail e senha ou com o Google.
 - Sessão mantida por aparelho, com aviso por e-mail quando a conta entra em um aparelho novo e o botão "Não fui eu" para desconectar tudo e trocar a senha.
-- Perfil para todos os papéis: dados, orçamentos (clientes), aparência do site e segurança (aparelhos conectados, troca de senha, atividade recente).
+- Perfil para todos os papéis: dados, orçamentos com a etapa de cada um (clientes), aparência do site e segurança (aparelhos conectados, troca de senha, atividade recente).
+- Em qualquer erro, o botão "Acionar suporte" abre o WhatsApp da equipe já com a mensagem e o código do registro.
 
 ### Gestão (administradores e gestores)
 
 - Painéis: cadastro, fotos, preço, situação e posição no mapa.
 - Pedidos do catálogo, usuários e papéis, portfólio da T3 Solution e página Sobre.
 - Tráfego e leads: visitas por dia, origem de cada visita e de cada lead (Google, Instagram, assistentes de IA, campanhas), páginas mais vistas, exportação em CSV e gerador de links de campanha.
+- Relatórios: vendas e negócios fechados no período, funil por etapa, previsão de receita ponderada pela probabilidade, receita dos últimos 12 meses, origem dos negócios e ocupação de cada painel mês a mês.
+- Registro de auditoria: quem alterou o quê no sistema (com antes e depois), alterações feitas direto no banco, histórico dos repositórios e erros da API e do navegador.
+- Busca rápida (Ctrl+K ou Cmd+K) em qualquer tela interna: páginas, clientes, negócios e painéis.
 
 ### CRM comercial
 
@@ -97,6 +101,7 @@ flowchart LR
 - Token de acesso de 15 minutos e refresh token por aparelho, trocado a cada uso. O banco guarda só o hash.
 - Limite de tentativas por IP e por conta, reCAPTCHA no login e no cadastro.
 - Row Level Security ligado em todas as tabelas do Supabase.
+- Toda alteração fica no registro de auditoria, inclusive as feitas fora da API: um gatilho no próprio Postgres grava mudanças vindas do painel do Supabase ou de ferramentas externas.
 - Estatísticas de visita próprias e anônimas, sem guardar IP, e opção "Só o essencial" no aviso de privacidade.
 
 A arquitetura de sessões, os e-mails de alerta e o roteiro de resposta a incidentes estão em [`Backend/docs/SEGURANCA.md`](https://github.com/T3OOH/Backend/blob/main/docs/SEGURANCA.md). Para reportar uma vulnerabilidade, veja a [política de segurança](https://github.com/T3OOH/.github/blob/main/SECURITY.md).
