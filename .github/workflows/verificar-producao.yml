@@ -48,8 +48,10 @@ jobs:
           while :; do
             corpo=$(curl -fsS --max-time 60 "$URL" || true)
             commit=$(printf '%s' "$corpo" | jq -r '.commit // empty' 2>/dev/null || true)
-            if [ -n "$corpo" ] && [ -z "$commit" ]; then
-              echo "O health não informa o commit; seguindo só com o status: $corpo"; break
+            # "commit": null = a API nova está no ar, mas fora do Render (sem RENDER_GIT_COMMIT).
+            # Sem o campo "commit" = ainda é a versão antiga: continua esperando.
+            if printf '%s' "$corpo" | jq -e 'has("commit") and .commit == null' >/dev/null 2>&1; then
+              echo "O health não informa o commit (fora do Render); seguindo só com o status: $corpo"; break
             fi
             if [ "$commit" = "$SHA" ]; then echo "Deploy de $SHA no ar."; break; fi
             if [ "$(date +%s)" -ge "$fim" ]; then
