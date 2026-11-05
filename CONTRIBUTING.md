@@ -19,6 +19,10 @@ Este guia vale para todos os repositórios da organização [T3OOH](https://gith
    | --- | --- |
    | Frontend | `npm run lint` · `npm run typecheck` · `npm run build` |
    | Backend | `npm run typecheck` · `npm run build` |
+   | BackendJS | `npm run lint` · `npm test -- --runInBand` · `npm run test:e2e` · `npm run build` · em `rust/eventos`: `cargo fmt --check` · `cargo clippy` · `cargo test` |
+   | AppT3 | em `app/`: `mvn -B verify` · em `relatorios/`: `ruff check .` · `pytest -q` |
+   | ApiDocs | `node scripts/check.mjs` |
+   | Ambiente | `docker compose config -q` |
 
 5. Abra o PR para a `main`, preencha o template e aguarde o CI ficar verde.
 6. O merge é feito com **Squash and merge**. A branch é apagada automaticamente.
@@ -79,8 +83,27 @@ Tipos aceitos: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `buil
 
 ## Ambiente
 
-- **Node.js 22 LTS** (veja `.nvmrc`). Com o nvm: `nvm use`.
-- Instale as dependências com `npm ci`, que respeita o `package-lock.json`.
+- O jeito mais rápido de ter tudo rodando (banco, API, site, eventos e relatórios) é o
+  [T3OOH/Ambiente](https://github.com/T3OOH/Ambiente): `scripts/preparar.ps1` (Windows) ou `scripts/preparar.sh`.
+  Ele usa um banco local com dados de exemplo; **nunca** desenvolva contra o banco de produção.
+- `scripts/verificar` no Ambiente confere as ferramentas instaladas (Node 22, Java 25, Python 3.14, Rust, Docker).
+- **Node.js 22 LTS** (veja `.nvmrc`). Com o nvm: `nvm use`. Instale as dependências com `npm ci`.
+
+## Pipeline
+
+Todo repositório segue o mesmo caminho até a produção (detalhes no [MAPA.md](MAPA.md)):
+
+1. **PR** → workflow `CI` (lint, testes e build). Precisa ficar verde.
+2. **Squash and merge** na `main` (a branch é apagada).
+3. **Deploy automático**: Render (Backend) e Hostinger (Frontend, ApiDocs) publicam a `main` sozinhos.
+4. **Produção**: o workflow `Produção` espera o deploy e confere as URLs. Se falhar, o GitHub avisa por e-mail.
+5. **App desktop**: versão nova = tag `vX.Y.Z` e release no AppT3 com o `.msi`.
+
+## Padrão dos repositórios
+
+Todo repositório tem: `README.md`, `.editorconfig` e `.gitattributes` iguais, `.gitignore`, `.github/CODEOWNERS`,
+`.github/dependabot.yml`, workflow `CI` (PR e push na `main`, com `concurrency`) e `atribuir-issues.yml`.
+Os que publicam algo também têm o workflow `Produção`. Configuração do GitHub: só *squash merge* e apagar a branch após o merge.
 
 ## Segurança
 
