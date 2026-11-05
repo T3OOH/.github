@@ -53,12 +53,17 @@ Os pedidos das duas linhas caem no mesmo CRM, separados por linha, e a equipe ac
 
 ## Repositórios
 
-| Repositório | Tecnologias | Hospedagem |
-| --- | --- | --- |
-| [Frontend](https://github.com/T3OOH/Frontend) | React 19, Vite, TypeScript, Tailwind CSS, Framer Motion, Leaflet | Vercel |
-| [Backend](https://github.com/T3OOH/Backend) | Node.js, Express 5, Prisma 7, Socket.IO, Zod | Render |
+| Repositório | O que é | Tecnologias | Publicação |
+| --- | --- | --- | --- |
+| [Frontend](https://github.com/T3OOH/Frontend) | Site, mapa, conta do cliente, gestão e CRM | React 19, Vite, TypeScript, Tailwind | Hostinger · `t3led.com.br` |
+| [Backend](https://github.com/T3OOH/Backend) | API REST e WebSocket (produção) | Node.js, Express 5, Prisma 7, Socket.IO, Zod | Render · `api.t3led.com.br` |
+| [BackendJS](https://github.com/T3OOH/BackendJS) | API nova (substituirá o Backend) + serviço de eventos | NestJS em JavaScript, Prisma, Rust | Render (`render.yaml`, ainda não publicado) |
+| [AppT3](https://github.com/T3OOH/AppT3) | App desktop **T3 Gestor**, **T3 Launcher** e serviço de relatórios | Java 25, JavaFX, Python (FastAPI) | GitHub Releases (`.msi`) |
+| [ApiDocs](https://github.com/T3OOH/ApiDocs) | Documentação da API | HTML, CSS e JS sem build | Hostinger · `docs.t3led.com.br` |
+| [Ambiente](https://github.com/T3OOH/Ambiente) | Ambiente de desenvolvimento local | Docker Compose | — |
 
-Banco de dados PostgreSQL e armazenamento de arquivos no Supabase. E-mails pelo Resend, no domínio `t3ooh.com`.
+Banco de dados PostgreSQL e armazenamento de arquivos no Supabase. E-mails pelo Resend, de `nao-responda@t3led.com.br`.
+O que já foi feito, o que falta e como o código chega à produção: [MAPA.md](https://github.com/T3OOH/.github/blob/main/MAPA.md).
 
 ## Arquitetura
 
@@ -66,12 +71,16 @@ Banco de dados PostgreSQL e armazenamento de arquivos no Supabase. E-mails pelo 
 flowchart LR
     V[Visitantes e clientes] --> FE
     E[Equipe T3] --> FE
-    FE[Frontend<br/>Vercel] -- REST com JWT --> BE[Backend<br/>Render]
+    E --> APP[T3 Gestor<br/>app desktop]
+    FE[Frontend<br/>Hostinger] -- REST com JWT --> BE[Backend<br/>Render]
     FE -- WebSocket --> BE
+    APP -- REST --> BE
+    APP --> REL[Relatórios<br/>Python local]
     BE --> DB[(PostgreSQL<br/>Supabase)]
     BE --> ST[(Arquivos<br/>Supabase Storage)]
     BE --> RS[Resend<br/>e-mails]
     BE --> GO[Google<br/>login e reCAPTCHA]
+    BE --> HG[Hostinger API<br/>caixas de e-mail]
 ```
 
 O caminho de um lead, do site ao fechamento:

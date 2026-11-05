@@ -1,0 +1,81 @@
+# Workflow reutilizável: confere a produção depois que um merge na main é publicado.
+# Usado por Backend, Frontend e ApiDocs (o deploy em si é automático no Render/Hostinger).
+#
+#   jobs:
+#     producao:
+#       uses: T3OOH/.github/.github/workflows/verificar-producao.yml@main
+#       with:
+#         health-url: https://api.t3led.com.br/health   # opcional: espera o "commit" bater
+#         urls: https://api.t3led.com.br/panels          # uma por linha; todas precisam dar 2xx
+name: Verificar produção
+
+on:
+  workflow_call:
+    inputs:
+      health-url:
+        description: URL que responde JSON com "commit" (o deploy novo só conta quando bater com o SHA do push)
+        type: string
+        default: ''
+      urls:
+        description: URLs (uma por linha) que precisam responder 2xx depois do deploy
+        type: string
+        default: ''
+      esperar-minutos:
+        description: Quanto tempo esperar o deploy novo antes de desistir
+        type: number
+        default: 12
+      espera-inicial:
+        description: Segundos antes da primeira checagem (para sites sem "commit" no health)
+        type: number
+        default: 0
+
+permissions: {}
+
+jobs:
+  verificar:
+    name: Produção no ar
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Esperar o deploy
+        if: inputs.health-url != ''
+        env:
+          URL: ${{ inputs.health-url }}
+          SHA: ${{ github.sha }}
+          MINUTOS: ${{ inputs.esperar-minutos }}
+        run: |
+          fim=$(( $(date +%s) + MINUTOS * 60 ))
+          while :; do
+            corpo=$(curl -fsS --max-time 60 "$URL" || true)
+            commit=$(printf '%s' "$corpo" | jq -r '.commit // empty' 2>/dev/null || true)
+            if [ -n "$corpo" ] && [ -z "$commit" ]; then
+              echo "O health não informa o commit; seguindo só com o status: $corpo"; break
+            fi
+            if [ "$commit" = "$SHA" ]; then echo "Deploy de $SHA no ar."; break; fi
+            if [ "$(date +%s)" -ge "$fim" ]; then
+              echo "::error::Depois de $MINUTOS min a produção ainda responde o commit '${commit:-?}' (esperado $SHA)."; exit 1
+            fi
+            echo "Ainda no commit '${commit:-sem resposta}'; nova tentativa em 20 s..."; sleep 20
+          done
+
+      - name: Espera inicial
+        if: inputs.espera-inicial > 0
+        run: sleep ${{ inputs.espera-inicial }}
+
+      - name: Conferir as URLs
+        if: inputs.urls != ''
+        env:
+          URLS: ${{ inputs.urls }}
+        run: |
+          falhas=0
+          while IFS= read -r url; do
+            url=$(printf '%s' "$url" | xargs); [ -z "$url" ] && continue
+            ok=0
+            for tentativa in 1 2 3 4 5; do
+              codigo=$(curl -sS -o /dev/null --max-time 60 -w '%{http_code}' "$url" || echo 000)
+              case "$codigo" in 2*) ok=1; break;; esac
+              sleep 15
+            done
+            if [ "$ok" = 1 ]; then echo "ok   $codigo  $url"; else echo "::error::$url respondeu $codigo"; falhas=$((falhas+1)); fi
+          done <<< "$URLS"
+          exit $falhas
