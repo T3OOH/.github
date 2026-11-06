@@ -1,6 +1,6 @@
 <div align="center">
 
-# T3 OOH
+# T3 OOH | T3 LED | T3 SOLUTION
 
 Painéis de LED e mídia exterior em Goiânia e no interior de Goiás.
 
