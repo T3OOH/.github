@@ -71,6 +71,10 @@ Mapa completo do que existe: [MAPA.md](MAPA.md).
 
 ## Histórico recente (mais novo primeiro)
 
+- 2026-11-06 — **Chat IA T3 corrigido** (Frontend #73): o "Fechar" não funcionava (atributo `hidden` perdia para a
+  classe `flex`); o balão foi para dentro do `MainLayout` (abaixo do cabeçalho z 500, por causa do `isolate`), o
+  Leaflet ganhou `z-0`, posição calculada em `posicaoBalao` (no /mapa acima do zoom e da faixa de cards) e o chat
+  aberto não cobre cabeçalho nem "Tela cheia". Merge do main na branch `fix/login-cadastro-sem-rolagem` (PR #54, verde).
 - 2026-11-06 — **IA T3** (balão de dúvidas no site todo, menos Gestão/CRM/login): 6 caixas de assunto (com "Outro"),
   respostas prontas com dados do banco, pergunta livre no Claude `claude-opus-5-5` (esforço baixo, JSON, cache do
   contexto, `fallbacks: "default"`), encaminhamento: comercial = lead sem dono na fila do CRM; gestão = contato +
