@@ -9,10 +9,14 @@ Atualizado em: 2026-11-06, fim da tarde (PC do Felipe).
 
 ## Em andamento
 
-Nada em andamento. Última entrega: recorte da capa (ver Histórico). Próximo pedido do usuário começa aqui.
+Nada em andamento. Última entrega: balão IA T3 (ver Histórico). Falta só configurar as variáveis no Render (Pendências).
 
 ## Pendências e perguntas abertas
 
+- **IA T3 sem a chave**: o balão está no ar só com respostas prontas e encaminhamento. Para a IA responder perguntas
+  livres, o usuário cria uma chave em console.anthropic.com e põe `ANTHROPIC_API_KEY` no Render (serviço da API).
+  `SUPORTE_TECNICO_EMAIL` no Render define para onde vão os pedidos técnicos (hoje vão para os ADMIN).
+  A chamada real ao Claude ainda não foi testada (nenhuma chave disponível no PC).
 - **Webmail com a identidade T3 LED**: a Hostinger não deixa personalizar. Opções oferecidas ao usuário:
   (a) webmail próprio em webmail.t3led.com.br (Roundcube/SnappyMail) ou (b) aba de e-mails no T3 Gestor. Sem resposta.
 - `RESEND_FROM` no Render: se tiver o nome antigo, sobrepõe o remetente padrão "T3 LED".
@@ -67,6 +71,11 @@ Mapa completo do que existe: [MAPA.md](MAPA.md).
 
 ## Histórico recente (mais novo primeiro)
 
+- 2026-11-06 — **IA T3** (balão de dúvidas no site todo, menos Gestão/CRM/login): 6 caixas de assunto (com "Outro"),
+  respostas prontas com dados do banco, pergunta livre no Claude `claude-opus-5-5` (esforço baixo, JSON, cache do
+  contexto, `fallbacks: "default"`), encaminhamento: comercial = lead sem dono na fila do CRM; gestão = contato +
+  e-mail ADMIN/MANAGER; técnico = contato + e-mail `SUPORTE_TECNICO_EMAIL`. Rotas `/assistente` (Backend #56,
+  BackendJS #26, Frontend #72, ApiDocs #14). Código igual em `backend/src/lib/assistente.ts` e `backend-js/src/lib/assistente.js`.
 - 2026-11-06 — **Enquadrar capa**: na foto de capa (cadastro e edição) o usuário arrasta um retângulo; os cards com
   moldura mostram o recorte (`imageFocus[url].corte`, `estiloFoco(..., 'recorte')` com CSS `scale`/`translate`).
   **Correção**: `thumb()` usa `resize=contain` (o Supabase cortava as laterais: 1080x1280 virava tira 480x1280).
