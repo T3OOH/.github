@@ -1,6 +1,6 @@
 <div align="center">
   
-  <img src="https://via.placeholder.com/150x150/000000/FFFFFF?text=T3+LED" alt="T3 LED Logo" width="120" />
+  <img src="t3-marker.webp" alt="T3 LED Logo" width="120" />
 
   # T3 LED & T3 SOLUTION
   
