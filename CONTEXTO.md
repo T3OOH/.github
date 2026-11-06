@@ -5,25 +5,11 @@
 > commit e PR neste repositório. É assim que o trabalho continua do PC para o notebook e vice-versa.
 > A memória do Claude fica só no computador onde ele roda; o que importa para continuar está aqui.
 
-Atualizado em: 2026-11-06 (PC do Felipe).
+Atualizado em: 2026-11-06, fim da tarde (PC do Felipe).
 
 ## Em andamento
 
-**Recorte da capa nos cards** (pedido: "quero que dê para selecionar em um quadrado a exibição do card na capa").
-- Ideia: na foto de capa (cadastro e edição de painéis), botão "Enquadrar capa" abre a foto grande; arrastar
-  desenha um retângulo; os cards do site mostram esse recorte (zoom + centro), com prévia dos formatos.
-- Dado: `Panel.imageFocus[url].corte = { x, y, w, h }` (0–100, w/h ≥ 5, dentro da foto).
-- Feito (não publicado): validador aceita `corte` no Backend e no BackendJS (branch `feat/recorte-capa`, com teste).
-- Falta no Frontend (`feat/recorte-capa`):
-  - `src/lib/imagens.ts`: `estiloFoco(focos, url, modo)` com `modo = 'recorte'` só nos cards com moldura
-    `overflow-hidden` (Map PanelCard e lista, InteractiveMap popup — pôr overflow-hidden no wrapper —, Home,
-    Services card). Recorte = `objectPosition` no centro + propriedades CSS individuais `scale` e `translate`
-    (`translate = s·(50−cx)% s·(50−cy)%`, `transformOrigin: center`; `s = max(1, 100/max(w,h),
-    50/min(cx,100−cx), 50/min(cy,100−cy))`, teto 6). Miniaturas soltas (carrinho, CRM, lista da Gestão,
-    card selecionado do mapa) usam só o centro do recorte. Galeria (`PanelGallery`) não usa recorte.
-  - Componente `EnquadrarCapa` (Sheet `size="lg"`, arrastar com pointer events, prévia 4:3, 16:9 e card do mapa).
-  - Botão na foto de capa no `PanelForm`; `FotoComFoco` desenha o retângulo.
-  - ApiDocs: documentar `corte`. Depois: PRs, merge na ordem Backend → BackendJS → Frontend → ApiDocs.
+Nada em andamento. Última entrega: recorte da capa (ver Histórico). Próximo pedido do usuário começa aqui.
 
 ## Pendências e perguntas abertas
 
@@ -81,6 +67,12 @@ Mapa completo do que existe: [MAPA.md](MAPA.md).
 
 ## Histórico recente (mais novo primeiro)
 
+- 2026-11-06 — **Enquadrar capa**: na foto de capa (cadastro e edição) o usuário arrasta um retângulo; os cards com
+  moldura mostram o recorte (`imageFocus[url].corte`, `estiloFoco(..., 'recorte')` com CSS `scale`/`translate`).
+  **Correção**: `thumb()` usa `resize=contain` (o Supabase cortava as laterais: 1080x1280 virava tira 480x1280).
+  Botão "Refazer foco automático" na lista de Painéis; rodado em produção: 11 automáticos recalculados, 27 manuais
+  do usuário intactos, 38 fotos iguais (Backend #55, BackendJS #25, Frontend #71, ApiDocs #13).
+- 2026-11-06 — **Caixa de contexto** (este arquivo) + `CLAUDE.md` na raiz instalado pelo `ambiente/scripts/preparar`.
 - 2026-11-06 — **Link do Google Maps** no cadastro de painéis: `GET /localidades/google-maps` (gestão) segue o link
   curto do Compartilhar só em domínios do Google e prefere o marcador `!3d!4d` (Backend #54, BackendJS #24, Frontend #70).
 - 2026-11-06 — **Pino do telão** na edição: `imageFocus[url].pino`, a IA procura o telão em volta (Frontend #69, Backend #53).
