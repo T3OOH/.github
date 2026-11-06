@@ -1,6 +1,7 @@
 # Mapa da T3 OOH
 
 O que já existe, onde roda, o que falta e como o código chega à produção. Atualizado em 2026-11-05.
+Trabalho em andamento, pendências e regras para o Claude continuar em qualquer computador: [CONTEXTO.md](CONTEXTO.md).
 
 ## Visão geral
 
