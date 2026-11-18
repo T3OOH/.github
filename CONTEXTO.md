@@ -5,7 +5,7 @@
 > commit e PR neste repositório. É assim que o trabalho continua do PC para o notebook e vice-versa.
 > A memória do Claude fica só no computador onde ele roda; o que importa para continuar está aqui.
 
-Atualizado em: 2026-11-06, fim da tarde (PC do Felipe).
+Atualizado em: 2026-11-17 (PC do Felipe).
 
 ## Em andamento
 
@@ -17,6 +17,8 @@ Nada em andamento. Última entrega: balão IA T3 (ver Histórico). Falta só con
   livres, o usuário cria uma chave em console.anthropic.com e põe `ANTHROPIC_API_KEY` no Render (serviço da API).
   `SUPORTE_TECNICO_EMAIL` no Render define para onde vão os pedidos técnicos (hoje vão para os ADMIN).
   A chamada real ao Claude ainda não foi testada (nenhuma chave disponível no PC).
+- **Custos** (`CUSTOS.md`): ~R$ 170-200/mês hoje. Falta confirmar o plano da Hostinger, o nº de caixas de e-mail
+  e o plano do Resend. Hospedagem vence 2026-12-05 e o teste do e-mail acaba ~04/12. Recomendado: Render Starter (US$ 7).
 - **Webmail com a identidade T3 LED**: a Hostinger não deixa personalizar. Opções oferecidas ao usuário:
   (a) webmail próprio em webmail.t3led.com.br (Roundcube/SnappyMail) ou (b) aba de e-mails no T3 Gestor. Sem resposta.
 - `RESEND_FROM` no Render: se tiver o nome antigo, sobrepõe o remetente padrão "T3 LED".
@@ -70,6 +72,9 @@ Mapa completo do que existe: [MAPA.md](MAPA.md).
 - Merge via `gh api -X PUT repos/T3OOH/<repo>/pulls/<n>/merge -f merge_method=squash`.
 
 ## Histórico recente (mais novo primeiro)
+
+- 2026-11-17 — **Levantamento de custos mensais** em `CUSTOS.md` (Supabase Pro verificado; Render, Vercel e GitHub
+  grátis; Hostinger estimada). `/graphify` ficou incompleto: AST pronto em `graphify-out/`, faltam os 2 lotes de docs.
 
 - 2026-11-06 — **Chat IA T3 corrigido** (Frontend #73): o "Fechar" não funcionava (atributo `hidden` perdia para a
   classe `flex`); o balão foi para dentro do `MainLayout` (abaixo do cabeçalho z 500, por causa do `isolate`), o
