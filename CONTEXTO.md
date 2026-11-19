@@ -10,14 +10,13 @@ Atualizado em: 2026-11-19 (PC do Felipe).
 ## Em andamento
 
 **Migração para a VPS feita em 2026-11-19** (ver Histórico). API, banco e Storage saíram do Render/Supabase cloud.
-Falta publicar o frontend: o deploy pelo GitHub da Hostinger está **desconectado** desde 2026-11-06 (Pendências).
+Frontend republicado no mesmo dia (deploy do GitHub da Hostinger reconectado).
 
 ## Pendências e perguntas abertas
 
-- **Frontend parado em 2026-11-06**: no hPanel (t3led.com.br > Implantações) aparece "O provedor do Git não está
-  conectado" e o Reimplantar fica desativado. Os merges do Frontend depois do #73 (inclusive o #76, miniaturas no
-  Storage próprio) não estão no ar. O usuário precisa reconectar o GitHub no hPanel (autorização OAuth). Até lá o site
-  mostra as fotos originais no lugar das miniaturas (funciona, só mais pesado).
+- **Deploy do Frontend pela Hostinger**: a conexão com o GitHub é uma só para a conta inteira. O app da Hostinger
+  precisa ter acesso à organização T3OOH (github.com/settings/installations > Hostinger). Nunca usar "Trocar GitHub
+  conta" no hPanel: substitui a conexão e para as implantações dos outros sites.
 - **Desligar Render e Supabase cloud**: o serviço `t3-led-ooh-plataforma` está **suspenso** (não apagado) e o projeto
   Supabase `obpzodeqatopkhatqwmk` está intacto, para rollback. Só apagar com OK do usuário, depois de alguns dias estável.
 
@@ -90,7 +89,8 @@ Mapa completo do que existe: [MAPA.md](MAPA.md).
   por tabela, estrutura, 72 objetos / 24,3 MB do Storage), recarga final na janela com o Render suspenso, 16 URLs de
   foto reescritas de `*.supabase.co` para `api.t3led.com.br/storage/v1`, DNS `api` trocado de CNAME (Render) para
   A 200.141.21.97. Miniaturas (`/render/image`) por imgproxy, iguais às do cloud. Frontend #76: `thumb()` aceita
-  `api.t3led.com.br` (mesclado, mas não publicado: GitHub desconectado na Hostinger).
+  `api.t3led.com.br`. O deploy da Hostinger estava sem GitHub desde 2026-11-06; o usuário deu ao app da Hostinger
+  acesso à T3OOH, o site foi reconectado a T3OOH/Frontend e republicado (miniaturas conferidas no /mapa).
 
 - 2026-11-17 — **Levantamento de custos mensais** em `CUSTOS.md` (Supabase Pro verificado; Render, Vercel e GitHub
   grátis; Hostinger estimada). `/graphify` ficou incompleto: AST pronto em `graphify-out/`, faltam os 2 lotes de docs.
