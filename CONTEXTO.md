@@ -5,23 +5,32 @@
 > commit e PR neste repositório. É assim que o trabalho continua do PC para o notebook e vice-versa.
 > A memória do Claude fica só no computador onde ele roda; o que importa para continuar está aqui.
 
-Atualizado em: 2026-11-17 (PC do Felipe).
+Atualizado em: 2026-11-19 (PC do Felipe).
 
 ## Em andamento
 
-Nada em andamento. Última entrega: balão IA T3 (ver Histórico). Falta só configurar as variáveis no Render (Pendências).
+**Migração para a VPS feita em 2026-11-19** (ver Histórico). API, banco e Storage saíram do Render/Supabase cloud.
+Falta publicar o frontend: o deploy pelo GitHub da Hostinger está **desconectado** desde 2026-11-06 (Pendências).
 
 ## Pendências e perguntas abertas
 
+- **Frontend parado em 2026-11-06**: no hPanel (t3led.com.br > Implantações) aparece "O provedor do Git não está
+  conectado" e o Reimplantar fica desativado. Os merges do Frontend depois do #73 (inclusive o #76, miniaturas no
+  Storage próprio) não estão no ar. O usuário precisa reconectar o GitHub no hPanel (autorização OAuth). Até lá o site
+  mostra as fotos originais no lugar das miniaturas (funciona, só mais pesado).
+- **Desligar Render e Supabase cloud**: o serviço `t3-led-ooh-plataforma` está **suspenso** (não apagado) e o projeto
+  Supabase `obpzodeqatopkhatqwmk` está intacto, para rollback. Só apagar com OK do usuário, depois de alguns dias estável.
+
 - **IA T3 sem a chave**: o balão está no ar só com respostas prontas e encaminhamento. Para a IA responder perguntas
-  livres, o usuário cria uma chave em console.anthropic.com e põe `ANTHROPIC_API_KEY` no Render (serviço da API).
-  `SUPORTE_TECNICO_EMAIL` no Render define para onde vão os pedidos técnicos (hoje vão para os ADMIN).
+  livres, o usuário cria uma chave em console.anthropic.com e põe `ANTHROPIC_API_KEY` em `/opt/t3led/api.env` na VPS.
+  `SUPORTE_TECNICO_EMAIL` (mesmo arquivo) define para onde vão os pedidos técnicos (hoje vão para os ADMIN).
   A chamada real ao Claude ainda não foi testada (nenhuma chave disponível no PC).
 - **Custos** (`CUSTOS.md`): ~R$ 170-200/mês hoje. Falta confirmar o plano da Hostinger, o nº de caixas de e-mail
-  e o plano do Resend. Hospedagem vence 2026-12-05 e o teste do e-mail acaba ~04/12. Recomendado: Render Starter (US$ 7).
+  e o plano do Resend. Hospedagem vence 2026-12-05 e o teste do e-mail acaba ~04/12. Render e Supabase saem da conta
+  depois de desligados (API, banco e Storage agora na VPS).
 - **Webmail com a identidade T3 LED**: a Hostinger não deixa personalizar. Opções oferecidas ao usuário:
   (a) webmail próprio em webmail.t3led.com.br (Roundcube/SnappyMail) ou (b) aba de e-mails no T3 Gestor. Sem resposta.
-- `RESEND_FROM` no Render: se tiver o nome antigo, sobrepõe o remetente padrão "T3 LED".
+- `RESEND_FROM` não está definido em produção: vale o remetente padrão "T3 LED".
 - T3 Gestor (AppT3): tela Indicadores e SLA e menu em grupos estão na `main`, mas só chegam aos usuários
   numa nova versão do app (última publicada: v1.3.0). A tela nova ainda não passou pela auditoria visual.
 - Frontend: o `main` foi reescrito em 2026-11-06 (mesmo conteúdo, outros SHAs). Sempre criar branch do
@@ -31,7 +40,7 @@ Nada em andamento. Última entrega: balão IA T3 (ver Histórico). Falta só con
 
 | Pasta local (`t3ooh/…`) | Repositório | O que é | Produção |
 | --- | --- | --- | --- |
-| `backend` | Backend | API em TypeScript + Express + Prisma | Render → **api.t3led.com.br** |
+| `backend` | Backend | API em TypeScript + Express + Prisma | VPS (T3Led) → **api.t3led.com.br** |
 | `backend-js` | BackendJS | Mesma API em NestJS (JS) + Rust; espelho do Backend | ainda não publicado |
 | `frontend` | Frontend | Site React + Vite (site, Gestão, CRM) | Hostinger → **t3led.com.br** |
 | `desktop` | AppT3 | T3 Gestor (JavaFX) + T3 Launcher + `relatorios` (Python) | GitHub Releases (.msi) |
@@ -39,22 +48,26 @@ Nada em andamento. Última entrega: balão IA T3 (ver Histórico). Falta só con
 | `ambiente` | Ambiente | Docker do ambiente local (`scripts/preparar.ps1`) | — |
 | `.github` | .github | MAPA.md, este CONTEXTO.md, workflow reutilizável | — |
 
-Banco: Supabase (Postgres + Storage, projeto `obpzodeqatopkhatqwmk`). Local: Docker em 127.0.0.1:5433 (t3/t3dev, banco t3ooh).
+Produção (desde 2026-11-19): VPS 200.141.21.97, projeto **T3Led** em `/opt/t3led` (Postgres + Storage do Supabase
+self-hosted + a API), versionado em FBR-Dev-Technology/Backend `infra/t3led` (roteiro em `infra/t3led/migracao/README.md`).
+`api.t3led.com.br` serve a API e o Storage (`/storage/v1`); segredos da API em `/opt/t3led/api.env`.
+Banco pelo painel painel.fbrdev.com.br (Banco de dados > T3Led). Local: Docker em 127.0.0.1:5433 (t3/t3dev, banco t3ooh).
 Mapa completo do que existe: [MAPA.md](MAPA.md).
 
 ## Regras combinadas com o usuário (valem sempre)
 
 - Responder sempre em **português do Brasil**.
 - **Merge automático autorizado**: PRs que o Claude abrir na T3OOH podem ser mesclados (squash) com CI verde,
-  apagando a branch. Merge na `main` do Backend/Frontend/ApiDocs **publica em produção** (workflow `Produção` confere).
+  apagando a branch. Merge na `main` do Frontend/ApiDocs **publica em produção** (Hostinger; workflow `Produção` confere).
+  **Backend não publica sozinho desde a migração**: depois do merge, rodar `sh infra/t3led/deploy-api.sh <clone do Backend>`
+  (repo FBR-Dev-Technology/Backend); o workflow `Produção` do Backend confere o commit em `/health`.
 - **Nunca force push.** Nunca contornar bloqueio do modo automático: explicar e pedir.
 - Nunca digitar senhas, criar contas ou resolver CAPTCHA pelo usuário; nunca registrar tokens/senhas
-  (`HOSTINGER_API_TOKEN`, `LAUNCHER_DOWNLOAD_PASSWORD` só no Render).
-- `backend/.env` e `backend-js/.env` do PC apontam para o banco de **produção**: não criar dados com eles.
-  Testar no banco local (Docker) ou no `demo/AuditoriaTelas` do AppT3.
-- **Migração do Prisma**: o Render não roda migração. Aplicar com `npx prisma migrate deploy` (no `backend/`, com o
-  `.env` de produção) **antes** de mesclar o código que usa a coluna nova (o Prisma lê todas as colunas).
-- Rota nova na API: mudar **Backend e BackendJS** (código igual) e `api-docs/assets/endpoints.js`.
+  (`HOSTINGER_API_TOKEN` e demais só em `/opt/t3led/api.env` na VPS).
+- `backend/.env` e `backend-js/.env` do PC ainda apontam para o Supabase cloud (antigo, sem uso em produção desde
+  2026-11-19): não criar dados com eles. Testar no banco local (Docker) ou no `demo/AuditoriaTelas` do AppT3.
+- **Migração do Prisma**: o deploy não roda migração. Aplicar no T3Led (Postgres sem porta pública: pelo container
+  `t3led-api` na VPS ou pelo SQL do painel) **antes** de publicar o código que usa a coluna nova.- Rota nova na API: mudar **Backend e BackendJS** (código igual) e `api-docs/assets/endpoints.js`.
 - Rota nova no React: incluir em `frontend/public/.htaccess`, senão vira 404 em produção.
 - Telas do T3 Gestor: **sem texto cortado e sem barra de rolagem** (listas em páginas, telas longas em abas).
 - Velocidade: home 100 no Lighthouse de celular. Não puxar libs pesadas para a home (TensorFlow só por import dinâmico).
@@ -72,6 +85,12 @@ Mapa completo do que existe: [MAPA.md](MAPA.md).
 - Merge via `gh api -X PUT repos/T3OOH/<repo>/pulls/<n>/merge -f merge_method=squash`.
 
 ## Histórico recente (mais novo primeiro)
+
+- 2026-11-19 — **Migração Supabase cloud + Render → VPS (T3Led)**. Cópia conferida linha a linha (contagem + md5
+  por tabela, estrutura, 72 objetos / 24,3 MB do Storage), recarga final na janela com o Render suspenso, 16 URLs de
+  foto reescritas de `*.supabase.co` para `api.t3led.com.br/storage/v1`, DNS `api` trocado de CNAME (Render) para
+  A 200.141.21.97. Miniaturas (`/render/image`) por imgproxy, iguais às do cloud. Frontend #76: `thumb()` aceita
+  `api.t3led.com.br` (mesclado, mas não publicado: GitHub desconectado na Hostinger).
 
 - 2026-11-17 — **Levantamento de custos mensais** em `CUSTOS.md` (Supabase Pro verificado; Render, Vercel e GitHub
   grátis; Hostinger estimada). `/graphify` ficou incompleto: AST pronto em `graphify-out/`, faltam os 2 lotes de docs.
