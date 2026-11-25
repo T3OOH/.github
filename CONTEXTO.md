@@ -5,12 +5,15 @@
 > commit e PR neste repositório. É assim que o trabalho continua do PC para o notebook e vice-versa.
 > A memória do Claude fica só no computador onde ele roda; o que importa para continuar está aqui.
 
-Atualizado em: 2026-11-19 (PC do Felipe).
+Atualizado em: 2026-11-25 (PC do Felipe).
 
 ## Em andamento
 
-**Migração para a VPS feita em 2026-11-19** (ver Histórico). API, banco e Storage saíram do Render/Supabase cloud.
-Frontend republicado no mesmo dia (deploy do GitHub da Hostinger reconectado).
+**Segurança e LGPD (2026-11-25)**: Backend #58 mesclado **mas não publicado** (o modo automático bloqueou o SSH
+para a VPS). Falta: (1) rodar `sh infra/t3led/deploy-api.sh <clone do Backend>` (repo FBR.Dev/Backend);
+(2) depois, mesclar **Frontend #79** (tela "Seus dados", cookies, política) e **ApiDocs #15**, que dependem das rotas novas
+`GET /profile/export` e `DELETE /profile`. BackendJS #31 é o espelho (só segurança; exportar/excluir e retenção ainda
+não foram copiados para o BackendJS).
 
 ## Pendências e perguntas abertas
 
@@ -84,6 +87,18 @@ Mapa completo do que existe: [MAPA.md](MAPA.md).
 - Merge via `gh api -X PUT repos/T3OOH/<repo>/pulls/<n>/merge -f merge_method=squash`.
 
 ## Histórico recente (mais novo primeiro)
+
+- 2026-11-25 — **Revisão de segurança + LGPD** (sem achado crítico/alto). Backend #58: chat do CRM restrito à carteira
+  do COMERCIAL (antes via clientes de outros vendedores), socket recusa sessão encerrada, `mediaUrl` só https, logout
+  confere assinatura, login sem enumeração por tempo, `GET /profile/export` e `DELETE /profile` (anonimiza; usa
+  `prismaSemAuditoria` para não guardar o "antes"), retenção diária (`services/retencao.service.ts`: eventos de
+  segurança 1 ano, analytics sem IP e até 25 meses, IP de contatos 6 meses). Frontend #79: estatística só após
+  "Entendi", "Preferências de cookies" no rodapé, `AvisoPrivacidade` nos formulários, aviso de IA no chat, política com
+  CNPJ, terceiros, transferência internacional e prazos (revisão jurídica recomendada). Frontend #80 (publicado):
+  painel sem foto ou com link quebrado mostra a logo da T3 em fundo preto ("Imagem ainda não adicionada").
+  Ficaram de fora: refresh token em localStorage (ideal: cookie HttpOnly), CSP de scripts e HSTS no `.htaccess`,
+  `/crm/site-clients` entrega CPF/CNPJ de todos os clientes ao COMERCIAL (regra de negócio), máscara de CPF/telefone
+  no `audit_logs`, ROPA/RIPD/DPAs (jurídico). RLS conferido só no Supabase antigo; o Postgres da VPS não foi revisado.
 
 - 2026-11-19 — **Migração Supabase cloud + Render → VPS (T3Led)**. Cópia conferida linha a linha (contagem + md5
   por tabela, estrutura, 72 objetos / 24,3 MB do Storage), recarga final na janela com o Render suspenso, 16 URLs de
