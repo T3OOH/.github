@@ -9,11 +9,9 @@ Atualizado em: 2026-11-25 (PC do Felipe).
 
 ## Em andamento
 
-**Segurança e LGPD (2026-11-25)**: Backend #58 mesclado **mas não publicado** (o modo automático bloqueou o SSH
-para a VPS). Falta: (1) rodar `sh infra/t3led/deploy-api.sh <clone do Backend>` (repo FBR.Dev/Backend);
-(2) depois, mesclar **Frontend #79** (tela "Seus dados", cookies, política) e **ApiDocs #15**, que dependem das rotas novas
-`GET /profile/export` e `DELETE /profile`. BackendJS #31 é o espelho (só segurança; exportar/excluir e retenção ainda
-não foram copiados para o BackendJS).
+Nada em andamento. Última entrega: segurança e LGPD (2026-11-25), tudo publicado: API na VPS (commit e333566,
+`/health` ok), Frontend #79 e #80 no ar, ApiDocs #15 e BackendJS #31 mesclados. No BackendJS ainda faltam
+exportar/excluir conta e a rotina de retenção (só no Backend).
 
 ## Pendências e perguntas abertas
 
