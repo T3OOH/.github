@@ -9,7 +9,8 @@ Atualizado em: 2026-11-25 (PC do Felipe).
 
 ## Em andamento
 
-Nada em andamento. Última entrega: segurança e LGPD (2026-11-25), tudo publicado: API na VPS (commit e333566,
+Nada em andamento. Última entrega: erros do registro (ERROS-GESTOR.md, Frontend #81, Backend #59 com deploy
+da API pelo `deploy-api.sh`). Antes: segurança e LGPD (2026-11-25), tudo publicado: API na VPS (commit e333566,
 `/health` ok), Frontend #79 e #80 no ar, ApiDocs #15 e BackendJS #31 mesclados. No BackendJS ainda faltam
 exportar/excluir conta e a rotina de retenção (só no Backend).
 
