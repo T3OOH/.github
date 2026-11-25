@@ -87,6 +87,11 @@ Mapa completo do que existe: [MAPA.md](MAPA.md).
 
 ## Histórico recente (mais novo primeiro)
 
+- 2026-11-25 — **Erros do registro da Gestão** analisados em [ERROS-GESTOR.md](ERROS-GESTOR.md) (155 erros e
+  157 avisos, 35 tipos). A maioria (pooler do Supabase, tabela `meetings`, avisos "Supavisor" que eram da API) acabou
+  com a VPS. Corrigidos: Frontend #81 (ignora ruído do Instagram/`window.ethereum`; recarrega sozinho após deploy,
+  uma vez por minuto e furando o cache) e Backend #59 (JSON inválido → 400, não 500). Lido pela tela Registros
+  (`GET /audit`) com o login do usuário; SSH na VPS foi bloqueado pelo modo automático.
 - 2026-11-25 — **Revisão de segurança + LGPD** (sem achado crítico/alto). Backend #58: chat do CRM restrito à carteira
   do COMERCIAL (antes via clientes de outros vendedores), socket recusa sessão encerrada, `mediaUrl` só https, logout
   confere assinatura, login sem enumeração por tempo, `GET /profile/export` e `DELETE /profile` (anonimiza; usa
