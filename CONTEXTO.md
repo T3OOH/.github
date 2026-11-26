@@ -9,8 +9,8 @@ Atualizado em: 2026-11-25 (PC do Felipe).
 
 ## Em andamento
 
-Nada em andamento. Última entrega: erros do registro (ERROS-GESTOR.md, Frontend #81, Backend #59 com deploy
-da API pelo `deploy-api.sh`). Antes: segurança e LGPD (2026-11-25), tudo publicado: API na VPS (commit e333566,
+Nada em andamento. Última entrega: erros do registro (ERROS-GESTOR.md, Frontend #81, Backend #59 publicado
+na VPS, commit 93cf320, `/health` e Produção ok). Antes: segurança e LGPD (2026-11-25), tudo publicado: API na VPS (commit e333566,
 `/health` ok), Frontend #79 e #80 no ar, ApiDocs #15 e BackendJS #31 mesclados. No BackendJS ainda faltam
 exportar/excluir conta e a rotina de retenção (só no Backend).
 
@@ -91,7 +91,8 @@ Mapa completo do que existe: [MAPA.md](MAPA.md).
   157 avisos, 35 tipos). A maioria (pooler do Supabase, tabela `meetings`, avisos "Supavisor" que eram da API) acabou
   com a VPS. Corrigidos: Frontend #81 (ignora ruído do Instagram/`window.ethereum`; recarrega sozinho após deploy,
   uma vez por minuto e furando o cache) e Backend #59 (JSON inválido → 400, não 500). Lido pela tela Registros
-  (`GET /audit`) com o login do usuário; SSH na VPS foi bloqueado pelo modo automático.
+  (`GET /audit`) com o login do usuário. API publicada pelo `deploy-api.sh` (commit 93cf320; JSON inválido em
+  produção já responde 400).
 - 2026-11-25 — **Revisão de segurança + LGPD** (sem achado crítico/alto). Backend #58: chat do CRM restrito à carteira
   do COMERCIAL (antes via clientes de outros vendedores), socket recusa sessão encerrada, `mediaUrl` só https, logout
   confere assinatura, login sem enumeração por tempo, `GET /profile/export` e `DELETE /profile` (anonimiza; usa
